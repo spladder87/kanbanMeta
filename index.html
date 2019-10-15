@@ -7,14 +7,23 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+    <link rel="stylesheet" type="text/css" href="style.css">
+
     <title>Kanban bräda | Grupp2</title>
   </head>
   <body>
-    <div class="container overflow-auto">
+    <div class="container">
+
+      
+      <h2>Kanban Meta</h2>
+      <h1 id="title"></h1>
+    
+      <div class="container">
+
       <div class="row mt-3">
+
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Logga in</button>
+        <button id="loginBtn" type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal">Logga in</button>
 
         <!-- Modal -->
         <div class="modal" id="loginModal" tabindex="-1" role="dialog">
@@ -38,6 +47,7 @@
                   </div>
                 </form>
               </div>
+              
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="getUsers()">Logga in</button>
               </div>
@@ -46,7 +56,7 @@
         </div><!--end modal-->
       </div><!--end row-->
     </div><!--end container-->
-           
+
 
 
     <!-- Optional JavaScript -->
