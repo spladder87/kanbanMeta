@@ -11,13 +11,18 @@ function getUsers() {
         .then(data => {
             for (i in data) {
                 if (data[i].name == username && data[i].password == password) {
-                   //console.log("Det funkar!");
+                   title.innerHTML = "Välkommen tillbaka" + " " + username ;                    
                    users.username = data[i].name
                    users.cards = addCardDeck()
                    localStorage.setItem('users', JSON.stringify(users))
                    showCards()
                 }
             }
+            if(data[i].name !== username || data[i].password !== password)
+                {
+                    window.alert("Fel användarnamn eller lösenord!")
+                    location.reload()
+                }
         })
 }
 
