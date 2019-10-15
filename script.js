@@ -1,6 +1,3 @@
-
-
- 
 const users = {
     username: '',
     cards: ''
@@ -14,7 +11,8 @@ function getUsers() {
         .then(data => {
             for (i in data) {
                 if (data[i].name == username && data[i].password == password) {
-                   title.innerHTML = "Välkommen tillbaka" + " " + username ;                    users.username = data[i].name
+                   title.innerHTML = "Välkommen tillbaka" + " " + username ;                    
+                   users.username = data[i].name
                    users.cards = addCardDeck()
                    localStorage.setItem('users', JSON.stringify(users))
                    showCards()
