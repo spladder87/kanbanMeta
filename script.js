@@ -1,3 +1,4 @@
+var divId = 0;
 const users = {
     username: '',
     cards: ''
@@ -11,46 +12,46 @@ function getUsers() {
         .then(data => {
             for (i in data) {
                 if (data[i].name == username && data[i].password == password) {
-
-                   title.innerHTML = "Välkommen tillbaka" + " " + username ;                    
-
-                   users.username = data[i].name
-                   users.cards = addCardDeck()
-                   localStorage.setItem('users', JSON.stringify(users))
-                   showCards()
+                    
+                    title.innerHTML = "Välkommen tillbaka" + " " + username;
+                    
+                    users.username = data[i].name
+                    users.cards = addCardDeck()
+                    localStorage.setItem('users', JSON.stringify(users))
+                    showCards()
                 }
             }
-            if(data[i].name !== username || data[i].password !== password)
-                {
-                    window.alert("Fel användarnamn eller lösenord!")
-                    location.reload()
-                }
+            if (data[i].name !== username || data[i].password !== password) {
+                window.alert("Fel användarnamn eller lösenord!")
+                location.reload()
+            }
         })
 }
 
 // returns string with deckcards for localstorage
-function addCardDeck(){
+function addCardDeck() {
     return `
     <button type="button" class="btn btn-primary" onclick="logOut()">Logga ut</button>
     <div class="card-deck mt-5">
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Todo</h5>
+                    <h5 class="card-title" contenteditable="true">Todo</h5>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                         <div id ="drag1" class="border border-dark p-3" draggable = "true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
-                        <p>Demo text för Todo</p>
+                        <p contenteditable="true">Demo text för Todo</p>
+                        <button type="button" class="btn btn-danger" onclick="removeCard(this)"><i class="fa fa-trash"></i></button>
                         </div>
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
-                    <button type="button" class="btn btn-light btn-block mt-1">Lägg till kort</button>
+                    <button type="button" class="btn btn-light btn-block mt-1" onclick="addCard(this)">Lägg till kort</button>
 
                 </div>
             </div>
@@ -58,21 +59,22 @@ function addCardDeck(){
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Doing</h5>
+                    <h5 class="card-title" contenteditable="true">Doing</h5>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                         <div id ="drag2" class="border border-dark p-3" draggable = "true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
-                        <p>Demo text för Doing</p>
+                        <p contenteditable="true">Demo text för Doing</p>
+                        <button type="button" class="btn btn-danger" onclick="removeCard(this)"><i class="fa fa-trash"></i></button>
                         </div>
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
-                    <button type="button" class="btn btn-light btn-block mt-1">Lägg till kort</button>
+                    <button type="button" class="btn btn-light btn-block mt-1" onclick="addCard(this)">Lägg till kort</button>
 
                 </div>
             </div>
@@ -80,21 +82,22 @@ function addCardDeck(){
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Test</h5>
+                    <h5 class="card-title" contenteditable="true">Test</h5>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                         <div id ="drag3" class="border border-dark p-3" draggable = "true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
-                        <p>Demo text för Test</p>
+                        <p contenteditable="true">Demo text för Test</p>
+                        <button type="button" class="btn btn-danger" onclick="removeCard(this)"><i class="fa fa-trash"></i></button>
                         </div>
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
-                    <button type="button" class="btn btn-light btn-block mt-1">Lägg till kort</button>
+                    <button type="button" class="btn btn-light btn-block mt-1" onclick="addCard(this)">Lägg till kort</button>
 
                 </div>
             </div>
@@ -102,21 +105,22 @@ function addCardDeck(){
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Done</h5>
+                    <h5 class="card-title" contenteditable="true">Done</h5>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                         <div id ="drag4" class="border border-dark p-3" draggable = "true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
-                        <p>Demo text för Todo</p>
+                        <p contenteditable="true">Demo text för Todo</p>
+                        <button type="button" class="btn btn-danger" onclick="removeCard(this)"><i class="fa fa-trash"></i></button>
                         </div>
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
-                    <button type="button" class="btn btn-light btn-block mt-1">Lägg till kort</button>
+                    <button type="button" class="btn btn-light btn-block mt-1" onclick="addCard(this)">Lägg till kort</button>
 
                 </div>
             </div>
@@ -135,12 +139,13 @@ function addCardDeck(){
 // shows cards on browser
 const container = document.getElementsByClassName('container')[0]
 function showCards() {
-        const saved = JSON.parse(localStorage.getItem('users'))
-        container.insertAdjacentHTML('beforeend', saved.cards)
-        removeBtn()
+    const container = document.getElementsByClassName('container')[0]
+    const saved = JSON.parse(localStorage.getItem('users'))
+    container.insertAdjacentHTML('beforeend', saved.cards)
+    removeBtn()
 }
 
-if(localStorage.getItem('users')){
+if (localStorage.getItem('users')) {
     showCards()
 
 }
@@ -152,24 +157,25 @@ function removeBtn() {
 }
 
 // logs out from kanban
-function logOut(){
+function logOut() {
     localStorage.clear()
     location.reload()
 }
 
 // drag-n-drop
 function allowDrop(ev) {
-  ev.preventDefault();
+    ev.preventDefault();
 }
 
 function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("text", ev.target.id);
 }
 
 function drop(ev, el) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  el.appendChild(document.getElementById(data));
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    el.appendChild(document.getElementById(data));
+
 
 }
 
@@ -219,21 +225,18 @@ function addNewList() {
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">${input}</h5>
+                    <h5 class="card-title" contenteditable="true">${input}</h5>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
-                        <div id ="drag4" class="border border-dark p-3" draggable = "true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
-                        <p>Demo text för ${input}</p>
-                        </div>
                     </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
 
-                    <button type="button" class="btn btn-light btn-block">Lägg till kort</button>
+                    <button type="button" class="btn btn-light btn-block" onclick="addCard(this)">Lägg till kort</button>
 
                 </div>
             </div>
@@ -244,3 +247,19 @@ function addNewList() {
     } 
 }
 
+function addCard(el) {
+
+    el.insertAdjacentHTML('beforebegin', `<div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+    <div id ="div${divId}" class="border border-dark p-3" draggable = "true" ondragstart="drag(event)" ondrop="return false" ondragover="return false">
+    <p contenteditable="true">Insert text here</p><button type="button" class="btn btn-danger" onclick="removeCard(this)"><i class="fa fa-trash"></i></button></div></div>
+    <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                    </div>
+`);
+
+    divId++;
+
+}
+
+function removeCard(el) {
+    el.parentNode.remove();
+}
