@@ -117,7 +117,7 @@ function addCardDeck(){
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card border-0">
                 <div class="card-body p-0">
-                    <button type="button" class="btn btn-light w-100">Lägg till lista</button>
+                    <button type="button" class="btn btn-light w-100" onclick="openFormToAddNewList()">Lägg till lista</button>
                 </div>
             </div>
         </div>
@@ -150,6 +150,7 @@ function logOut(){
     location.reload()
 }
 
+// drag-n-drop
 function allowDrop(ev) {
   ev.preventDefault();
 }
@@ -164,3 +165,6 @@ function drop(ev, el) {
   el.appendChild(document.getElementById(data));
 
 }
+
+
+
