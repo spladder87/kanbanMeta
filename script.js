@@ -1,5 +1,6 @@
+var newListColumn;
 var divId = 0;
-const users = {
+var users = {
     username: '',
     cards: ''
 }
@@ -12,18 +13,15 @@ function getUsers() {
         .then(data => {
             for (i in data) {
                 if (data[i].name == username && data[i].password == password) {
-                    
+
                     title.innerHTML = "Välkommen tillbaka" + " " + username;
-                    
+
                     users.username = data[i].name
-                    users.cards = addCardDeck()
-                    localStorage.setItem('users', JSON.stringify(users))
-                    showCards()
+                    showCards();
                 }
             }
             if (data[i].name !== username || data[i].password !== password) {
                 window.alert("Fel användarnamn eller lösenord!")
-                location.reload()
             }
         })
 }
@@ -137,17 +135,21 @@ function addCardDeck() {
 }
 
 // shows cards on browser
-const container = document.getElementsByClassName('container')[0]
 function showCards() {
-    const container = document.getElementsByClassName('container')[0]
-    const saved = JSON.parse(localStorage.getItem('users'))
-    container.insertAdjacentHTML('beforeend', saved.cards)
-    removeBtn()
-}
+    const container = document.getElementById('view')
+    const saved = localStorage.getItem(users.username)
 
-if (localStorage.getItem('users')) {
-    showCards()
-
+    if (saved != null) {
+        container.insertAdjacentHTML('beforeend', saved)
+        removeBtn()
+        contentEdit()
+    } else {
+        removeBtn()
+        users.cards = addCardDeck()
+        localStorage.setItem(users.username, users.cards)
+        container.insertAdjacentHTML('beforeend', users.cards)
+        contentEdit()
+    }
 }
 
 // removes log in button
@@ -158,7 +160,6 @@ function removeBtn() {
 
 // logs out from kanban
 function logOut() {
-    localStorage.clear()
     location.reload()
 }
 
@@ -180,10 +181,11 @@ function drop(ev, el) {
 }
 
 // adds form for adding a new list
-const cards = document.getElementsByClassName('card-deck mt-5')[0]
-const newListColumn = cards.lastElementChild
+
 
 function openFormToAddNewList() {
+    const cards = document.getElementsByClassName('card-deck mt-5')[0]
+    newListColumn = cards.lastElementChild
     newListColumn.lastElementChild.insertAdjacentHTML('beforeend', `
     <form id="new-list-form" class="form-inline">
         <div class="form-group p-0 w-100">
@@ -200,8 +202,8 @@ function openFormToAddNewList() {
 
 function isTitle(input) {
     const titles = document.getElementsByClassName('card-title')
-    for(let i =0; i < titles.length; i++) {
-        if(input.toLowerCase() === titles[i].textContent.toLocaleLowerCase()){
+    for (let i = 0; i < titles.length; i++) {
+        if (input.toLowerCase() === titles[i].textContent.toLocaleLowerCase()) {
             newListColumn.lastElementChild.insertAdjacentHTML('beforeend', `
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     <strong>Felmeddelande!</strong> Namnet "${input}" redan finns. Välj ett annat namn.
@@ -211,7 +213,7 @@ function isTitle(input) {
                 </div>
             `)
             return false
-        } 
+        }
     }
     return true
 }
@@ -220,7 +222,7 @@ function addNewList() {
     const form = document.getElementById('new-list-form')
     const input = document.getElementById('new-list-title').value
 
-    if(input.length > 0 && isTitle(input)) {
+    if (input.length > 0 && isTitle(input)) {
         newListColumn.insertAdjacentHTML('beforebegin', `
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
@@ -244,7 +246,7 @@ function addNewList() {
         `)
         form.remove()
         newListColumn.lastElementChild.firstElementChild.hidden = false
-    } 
+    }
 }
 
 function addCard(el) {
@@ -257,9 +259,46 @@ function addCard(el) {
 `);
 
     divId++;
+    contentEdit()
 
 }
 
 function removeCard(el) {
     el.parentNode.remove();
+    const container = (document.getElementById('view'))
+    localStorage.setItem(users.username, container.innerHTML)
+}
+function contentEdit() {
+    var contents = document.querySelectorAll("[contenteditable=true]");
+    [].forEach.call(contents, function (content) {
+        // When you click on item, record into `data-initial-text` content of this item.
+        content.addEventListener("focus", function () {
+            content.setAttribute("data-initial-text", content.innerHTML);
+        });
+        // When you leave an item...
+        content.addEventListener("blur", function () {
+            // ...if content is different...
+            if (content.getAttribute("data-initial-text") !== content.innerHTML) {
+                // ... do something.
+                console.log("New data when content change.");
+                var btn = document.createElement("BUTTON");   // Create a <button> element
+                btn.innerHTML = "Spara dina ändringar";
+                btn.id = "localSave";
+                btn.addEventListener("click", saveToLocal);                  // Insert text
+                document.body.appendChild(btn);               // Append <button> to <body>
+            }
+        });
+    });
+}
+
+function saveToLocal() {
+    removeSaveButton();
+    const container = (document.getElementById('view'))
+    localStorage.setItem(users.username, container.innerHTML)
+}
+function removeSaveButton() {
+    var element = document.getElementById("localSave");
+    if (element != null) {
+        element.remove();
+    }
 }
