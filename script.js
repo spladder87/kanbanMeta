@@ -176,6 +176,7 @@ function drop(ev, el) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
     el.appendChild(document.getElementById(data));
+    saveToLocal();
 
 
 }
@@ -246,6 +247,7 @@ function addNewList() {
         `)
         form.remove()
         newListColumn.lastElementChild.firstElementChild.hidden = false
+        saveToLocal();
     }
 }
 
@@ -265,8 +267,7 @@ function addCard(el) {
 
 function removeCard(el) {
     el.parentNode.remove();
-    const container = (document.getElementById('view'))
-    localStorage.setItem(users.username, container.innerHTML)
+    saveToLocal();
 }
 function contentEdit() {
     var contents = document.querySelectorAll("[contenteditable=true]");
@@ -281,17 +282,13 @@ function contentEdit() {
             if (content.getAttribute("data-initial-text") !== content.innerHTML) {
                 // ... do something.
                 console.log("New data when content change.");
-                var btn = document.createElement("BUTTON");   // Create a <button> element
-                btn.innerHTML = "Spara dina ändringar";
-                btn.id = "localSave";
-                btn.addEventListener("click", saveToLocal);                  // Insert text
-                document.body.appendChild(btn);               // Append <button> to <body>
+                saveToLocal();
             }
         });
     });
 }
 
-function saveToLocal() {
+/* function saveToLocal() {
     removeSaveButton();
     const container = (document.getElementById('view'))
     localStorage.setItem(users.username, container.innerHTML)
@@ -301,4 +298,9 @@ function removeSaveButton() {
     if (element != null) {
         element.remove();
     }
+} */
+
+function saveToLocal() {
+    const container = (document.getElementById('view'))
+    localStorage.setItem(users.username, container.innerHTML)
 }
