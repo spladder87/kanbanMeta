@@ -20,9 +20,12 @@ function getUsers() {
                     showCards();
                 }
             }
-            if (data[i].name !== username || data[i].password !== password) {
+            if (users.username !== username && users.password !== password) {
+
                 window.alert("Fel användarnamn eller lösenord!")
-            }
+            
+                location.reload()
+        }
         })
 }
 
