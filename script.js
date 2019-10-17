@@ -231,7 +231,10 @@ function addNewList() {
         <div class="col-sm-6 col-md-4 col-xl p-0 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title" contenteditable="true">${input}</h5>
+                    <div class="d-flex mb-2">
+                        <h5 class="card-title w-100" contenteditable="true">${input}</h5>
+                        <button type="button" class="btn btn-sm btn-danger flex-shrink-1" onclick="removeList(this)"><i class="fa fa-trash"></i></button>
+                    </div>
 
                     <div class="dropzone border border-dark p-3" ondrop="drop(event, this)" ondragover="allowDrop(event)">
                     </div>
@@ -295,4 +298,10 @@ function contentEdit() {
 function saveToLocal() {
     const container = (document.getElementById('view'))
     localStorage.setItem(users.username, container.innerHTML)
+}
+
+function removeList(el) {
+    el.parentNode.parentNode.parentNode.remove()
+    saveToLocal()
+    location.reload()
 }
