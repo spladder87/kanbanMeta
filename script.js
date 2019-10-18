@@ -5,6 +5,30 @@ var users = {
     cards: ''
 }
 
+function userIsLoggedIn () {
+    console.log("TESTIN");
+    for (let i = 0; i < localStorage.length; i++) {
+        console.log("TESTIN2");
+            let lsUserName = localStorage.key(i);
+            console.log(lsUserName);
+            let lsPassWord = localStorage.getItem(lsUserName);
+            fetch("users.json")
+            .then(res => res.json())
+            .then(data => {
+                for (i in data) {
+                    if (data[i].name == lsUserName && data[i].password == lsPassWord) {
+                        title.innerHTML = "Välkommen tillbaka" + " " + lsUserName;
+                        users.username = data[i].name
+                        showCards();
+                    }
+                }
+
+            })
+        }
+}
+
+userIsLoggedIn();
+
 function getUsers() {
     let username = document.getElementById("inputUsername").value;
     let password = document.getElementById("inputPassword").value;
@@ -15,8 +39,9 @@ function getUsers() {
                 if (data[i].name == username && data[i].password == password) {
 
                     title.innerHTML = "Välkommen tillbaka" + " " + username;
-
+                    localStorage.setItem(username, password)
                     users.username = data[i].name
+                    console.log(users.username)
                     showCards();
                 }
             }
@@ -140,7 +165,7 @@ function addCardDeck() {
 // shows cards on browser
 function showCards() {
     const container = document.getElementById('view')
-    const saved = localStorage.getItem(users.username)
+    const saved = localStorage.getItem('view'+users.username)
 
     if (saved != null) {
         container.insertAdjacentHTML('beforeend', saved)
@@ -149,7 +174,7 @@ function showCards() {
     } else {
         removeBtn()
         users.cards = addCardDeck()
-        localStorage.setItem(users.username, users.cards)
+        localStorage.setItem('view'+users.username, users.cards)
         container.insertAdjacentHTML('beforeend', users.cards)
         contentEdit()
     }
@@ -163,6 +188,7 @@ function removeBtn() {
 
 // logs out from kanban
 function logOut() {
+    localStorage.removeItem(users.username)
     location.reload()
 }
 
@@ -297,11 +323,11 @@ function contentEdit() {
 
 function saveToLocal() {
     const container = (document.getElementById('view'))
-    localStorage.setItem(users.username, container.innerHTML)
+    localStorage.setItem('view'+users.username, container.innerHTML)
 }
 
 function removeList(el) {
     el.parentNode.parentNode.parentNode.remove()
     saveToLocal()
-    location.reload()
 }
+
